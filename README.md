@@ -18,9 +18,9 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 
 - `yarn`
 - Add the network key and its corresponding RPC url to `foundry.toml`
-- `yarn deploy {network} --broadcast` followed with appropriate private key management parameters
+- `yarn deploy:{component} {network} --broadcast` followed with appropriate private key management parameters
 
-For example: `yarn deploy mainnet --broadcast --ledger`
+For example: `yarn deploy:morpho mainnet --broadcast --ledger`
 
 ## Licence
 

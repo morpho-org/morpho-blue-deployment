@@ -6,10 +6,12 @@
   "scripts": {
     "prepare": "husky install && forge install",
     "script": "FOUNDRY_PROFILE=script forge script",
-    "deploy": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn script script/Deploy.sol --sig \"run(string memory)\"",
+    "deploy:morpho": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn script script/DeployMorpho.sol --sig \"run(string memory)\"",
+    "deploy:metamorpho": "yarn build:metamorpho && yarn script script/DeployMetaMorpho.sol --sig \"run(string memory)\"",
     "build:blue": "cd lib/morpho-blue/ && yarn build:forge && cd ../..",
     "build:irm": "cd lib/morpho-blue-irm/ && yarn build:forge && cd ../..",
     "build:oracles": "cd lib/morpho-blue-oracles/ && forge build && cd ../..",
+    "build:metamorpho": "cd lib/metamorpho/ && yarn build:forge && cd ../..",
     "test": "FOUNDRY_PROFILE=test forge test",
     "lint": "forge fmt --check",
     "lint:fix": "forge fmt"

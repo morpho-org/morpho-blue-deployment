@@ -19,8 +19,8 @@ via-ir = false
 [profile.script]
 test = "/dev/null"
 fs_permissions = [
+    { access = "read", path = "./broadcast/DeployMorpho.sol/"},
     { access = "read", path = "./script/config/"},
-    { access = "read", path = "./lib/morpho-blue/out/"},
     { access = "read", path = "./lib/morpho-blue-irm/out/"},
     { access = "read", path = "./lib/morpho-blue-oracles/out/"}
 ]

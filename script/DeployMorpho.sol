@@ -5,49 +5,10 @@ import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
 
 import {Morpho, MarketParams, MarketParamsLib, Id} from "../lib/morpho-blue/src/Morpho.sol";
 
-import "../lib/forge-std/src/Script.sol";
-import "../lib/forge-std/src/console2.sol";
+import "./ConfiguredScript.sol";
 
-/// @dev Warning: keys must be ordered alphabetically.
-struct OracleConfig {
-    address baseFeed1;
-    address baseFeed2;
-    address quoteFeed1;
-    address quoteFeed2;
-    address vault;
-    uint256 vaultConversionSample;
-}
-
-/// @dev Warning: keys must be ordered alphabetically.
-struct MarketConfig {
-    address collateralToken;
-    uint256[] lltvs;
-    address loanToken;
-    string name;
-    OracleConfig oracle;
-}
-
-/// @dev Warning: keys must be ordered alphabetically.
-struct AdaptiveCurveIrmConfig {
-    uint256 adjustmentSpeed;
-    uint256 curveSteepness;
-    uint256 initialRateAtTarget;
-    uint256 targetUtilization;
-}
-
-/// @dev Warning: keys must be ordered alphabetically.
-struct DeployConfig {
-    AdaptiveCurveIrmConfig adaptiveCurveIrm;
-    uint256[] lltvs;
-    MarketConfig[] markets;
-    address owner;
-    bytes32 salt;
-}
-
-contract Deploy is Script {
+contract DeployMorpho is ConfiguredScript {
     using MarketParamsLib for MarketParams;
-
-    Morpho morpho;
 
     function run(string memory network) external {
         DeployConfig memory config = _initConfig(network);
@@ -56,7 +17,7 @@ contract Deploy is Script {
 
         // Deploy Morpho Blue
         vm.broadcast();
-        morpho = new Morpho{salt: config.salt}(msg.sender);
+        morpho = IMorpho(address(new Morpho{salt: config.salt}(msg.sender)));
 
         console2.log("Deployed Morpho Blue at: %s", address(morpho));
 
@@ -140,11 +101,5 @@ contract Deploy is Script {
 
         vm.broadcast();
         morpho.setOwner(config.owner);
-    }
-
-    function _initConfig(string memory network) internal returns (DeployConfig memory) {
-        vm.createSelectFork(vm.rpcUrl(network));
-
-        return abi.decode(vm.parseJson(vm.readFile(string.concat("script/config/", network, ".json"))), (DeployConfig));
     }
 }
