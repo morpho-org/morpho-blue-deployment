@@ -26,6 +26,12 @@ struct MarketConfig {
 }
 
 /// @dev Warning: keys must be ordered alphabetically.
+struct BundlerConfig {
+    bytes32[] args;
+    string name;
+}
+
+/// @dev Warning: keys must be ordered alphabetically.
 struct AdaptiveCurveIrmConfig {
     uint256 adjustmentSpeed;
     uint256 curveSteepness;
@@ -36,6 +42,7 @@ struct AdaptiveCurveIrmConfig {
 /// @dev Warning: keys must be ordered alphabetically.
 struct DeployConfig {
     AdaptiveCurveIrmConfig adaptiveCurveIrm;
+    BundlerConfig[] bundlers;
     uint256[] lltvs;
     MarketConfig[] markets;
     address owner;
@@ -49,7 +56,7 @@ contract ConfiguredScript is Script {
 
     IMorpho internal morpho;
 
-    function _initConfig(string memory network) internal returns (DeployConfig memory) {
+    function _initConfig(string memory network, bool requireMorpho) internal returns (DeployConfig memory) {
         configPath = string.concat("script/config/", network, ".json");
 
         vm.createSelectFork(vm.rpcUrl(network));
@@ -66,6 +73,8 @@ contract ConfiguredScript is Script {
             );
 
             morpho = IMorpho(latestRun.readAddress("$.transactions[0].contractAddress"));
+        } else {
+            require(!requireMorpho, "missing Morpho deployment");
         }
 
         return abi.decode(vm.parseJson(vm.readFile(configPath)), (DeployConfig));

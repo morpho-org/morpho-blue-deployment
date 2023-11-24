@@ -1,14 +1,14 @@
 [profile.default]
 names = true
 sizes = true
-via-ir = true
+via-ir = false
 libs = ["node_modules", "lib"]
 
 [profile.default.fmt]
 wrap_comments = true
 
 [profile.default.rpc_endpoints]
-mainnet = "https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
+ethereum = "https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
 tenderly = "https://rpc.tenderly.co/fork/${TENDERLY_FORK_ID}"
 
 
@@ -22,7 +22,8 @@ fs_permissions = [
     { access = "read", path = "./broadcast/DeployMorpho.sol/"},
     { access = "read", path = "./script/config/"},
     { access = "read", path = "./lib/morpho-blue-irm/out/"},
-    { access = "read", path = "./lib/morpho-blue-oracles/out/"}
+    { access = "read", path = "./lib/morpho-blue-oracles/out/"},
+    { access = "read", path = "./lib/morpho-blue-bundlers/out/"}
 ]
 
 

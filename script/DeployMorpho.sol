@@ -11,7 +11,7 @@ contract DeployMorpho is ConfiguredScript {
     using MarketParamsLib for MarketParams;
 
     function run(string memory network) external {
-        DeployConfig memory config = _initConfig(network);
+        DeployConfig memory config = _initConfig(network, false);
 
         console2.log("Running deployment script using %s...", msg.sender);
 
