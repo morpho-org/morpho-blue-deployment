@@ -1,0 +1,36 @@
+{
+  "name": "morpho-blue-deployment",
+  "description": "Morpho Blue Deployment",
+  "license": "GPL-2.0-or-later",
+  "version": "0.0.0",
+  "scripts": {
+    "prepare": "husky install && forge install",
+    "script": "FOUNDRY_PROFILE=script forge script",
+    "deploy": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn script script/Deploy.sol --sig \"run(string memory)\"",
+    "build:blue": "cd lib/morpho-blue/ && yarn build:forge && cd ../..",
+    "build:irm": "cd lib/morpho-blue-irm/ && yarn build:forge && cd ../..",
+    "build:oracles": "cd lib/morpho-blue-oracles/ && forge build && cd ../..",
+    "test": "FOUNDRY_PROFILE=test forge test",
+    "lint": "forge fmt --check",
+    "lint:fix": "forge fmt"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.2"
+  },
+  "lint-staged": {
+    "*.sol": "forge fmt",
+    "*.js": "yarn prettier",
+    "*.ts": "yarn prettier",
+    "*.json": "yarn prettier",
+    "*.yml": "yarn prettier"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
