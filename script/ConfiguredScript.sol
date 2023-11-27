@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IMorpho} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
+import {IAdaptiveCurveIrm} from "../lib/morpho-blue-irm/src/interfaces/IAdaptiveCurveIrm.sol";
 
 import "../lib/forge-std/src/Script.sol";
 import "../lib/forge-std/src/console2.sol";
@@ -60,6 +61,7 @@ contract ConfiguredScript is Script {
     string internal configPath;
 
     IMorpho internal morpho;
+    IAdaptiveCurveIrm internal irm;
 
     function _init(string memory network, bool requireMorpho) internal returns (DeployConfig memory) {
         vm.createSelectFork(vm.rpcUrl(network));
@@ -77,11 +79,6 @@ contract ConfiguredScript is Script {
 
         if (vm.exists(latestRunPath)) {
             string memory latestRun = vm.readFile(latestRunPath);
-
-            require(
-                keccak256(bytes(latestRun.readString("$.transactions[0].contractName"))) == keccak256("Morpho"),
-                "unexpected contract deployment"
-            );
 
             morpho = IMorpho(latestRun.readAddress("$.transactions[0].contractAddress"));
         } else {

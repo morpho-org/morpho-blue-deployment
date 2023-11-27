@@ -24,21 +24,23 @@ contract DeployMorpho is ConfiguredScript {
 
         // Deploy & enable AdaptiveCurveIrm
         vm.broadcast();
-        address irm = deployCode(
-            "lib/morpho-blue-irm/out/AdaptiveCurveIrm.sol/AdaptiveCurveIrm.json",
-            abi.encode(
-                address(morpho),
-                config.adaptiveCurveIrm.curveSteepness,
-                config.adaptiveCurveIrm.adjustmentSpeed,
-                config.adaptiveCurveIrm.targetUtilization,
-                config.adaptiveCurveIrm.initialRateAtTarget
+        irm = IAdaptiveCurveIrm(
+            deployCode(
+                "lib/morpho-blue-irm/out/AdaptiveCurveIrm.sol/AdaptiveCurveIrm.json",
+                abi.encode(
+                    address(morpho),
+                    config.adaptiveCurveIrm.curveSteepness,
+                    config.adaptiveCurveIrm.adjustmentSpeed,
+                    config.adaptiveCurveIrm.targetUtilization,
+                    config.adaptiveCurveIrm.initialRateAtTarget
+                )
             )
         );
 
-        console2.log("Deployed AdaptiveCurveIrm at: %s", irm);
+        console2.log("Deployed AdaptiveCurveIrm at: %s", address(irm));
 
         vm.broadcast();
-        morpho.enableIrm(irm);
+        morpho.enableIrm(address(irm));
 
         // Enable all LLTVs
         for (uint256 i; i < config.lltvs.length; ++i) {
@@ -86,7 +88,7 @@ contract DeployMorpho is ConfiguredScript {
                     collateralToken: marketConfig.collateralToken,
                     loanToken: marketConfig.loanToken,
                     lltv: marketConfig.lltvs[j],
-                    irm: irm,
+                    irm: address(irm),
                     oracle: oracle
                 });
 
