@@ -27,4 +27,8 @@ contract DeployMorphoEthereumTest is DeployMorpho, Test {
             )
         );
     }
+
+    function testIrmEnabled() public {
+        assertTrue(morpho.isIrmEnabled(address(irm)));
+    }
 }
