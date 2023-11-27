@@ -39,13 +39,19 @@ struct AdaptiveCurveIrmConfig {
 }
 
 /// @dev Warning: keys must be ordered alphabetically.
+struct DeploySalt {
+    bytes32 metamorphoFactory;
+    bytes32 morpho;
+}
+
+/// @dev Warning: keys must be ordered alphabetically.
 struct DeployConfig {
     AdaptiveCurveIrmConfig adaptiveCurveIrm;
     BundlerConfig[] bundlers;
     uint256[] lltvs;
     MarketConfig[] markets;
     address owner;
-    bytes32 salt;
+    DeploySalt salt;
 }
 
 contract ConfiguredScript is Script {
@@ -55,10 +61,16 @@ contract ConfiguredScript is Script {
 
     IMorpho internal morpho;
 
-    function _initConfig(string memory network, bool requireMorpho) internal returns (DeployConfig memory) {
-        configPath = string.concat("script/config/", network, ".json");
-
+    function _init(string memory network, bool requireMorpho) internal returns (DeployConfig memory) {
         vm.createSelectFork(vm.rpcUrl(network));
+
+        console2.log("Running script on network %s using %s...", network, msg.sender);
+
+        return _loadConfig(network, requireMorpho);
+    }
+
+    function _loadConfig(string memory network, bool requireMorpho) internal returns (DeployConfig memory) {
+        configPath = string.concat("script/config/", network, ".json");
 
         string memory latestRunPath =
             string.concat("broadcast/DeployMorpho.sol/", vm.toString(block.chainid), "/run-latest.json");
@@ -77,5 +89,15 @@ contract ConfiguredScript is Script {
         }
 
         return abi.decode(vm.parseJson(vm.readFile(configPath)), (DeployConfig));
+    }
+
+    function _deployCreate2Code(string memory what, bytes memory args, bytes32 salt) internal returns (address addr) {
+        bytes memory bytecode = abi.encodePacked(vm.getCode(what), args);
+
+        assembly ("memory-safe") {
+            addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
+        }
+
+        require(addr != address(0), "create2 deployment failed");
     }
 }

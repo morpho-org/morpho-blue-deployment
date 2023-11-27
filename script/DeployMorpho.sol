@@ -3,21 +3,22 @@ pragma solidity ^0.8.0;
 
 import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
 
-import {Morpho, MarketParams, MarketParamsLib, Id} from "../lib/morpho-blue/src/Morpho.sol";
+import {IMorpho, MarketParams, Id} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
+import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
 
 import "./ConfiguredScript.sol";
 
 contract DeployMorpho is ConfiguredScript {
     using MarketParamsLib for MarketParams;
 
-    function run(string memory network) public {
-        DeployConfig memory config = _initConfig(network, false);
-
-        console2.log("Running deployment script using %s...", msg.sender);
+    function run(string memory network) public returns (DeployConfig memory config) {
+        config = _init(network, false);
 
         // Deploy Morpho Blue
         vm.broadcast();
-        morpho = IMorpho(address(new Morpho{salt: config.salt}(msg.sender)));
+        morpho = IMorpho(
+            _deployCreate2Code("lib/morpho-blue/out/Morpho.sol/Morpho.json", abi.encode(msg.sender), config.salt.morpho)
+        );
 
         console2.log("Deployed Morpho Blue at: %s", address(morpho));
 

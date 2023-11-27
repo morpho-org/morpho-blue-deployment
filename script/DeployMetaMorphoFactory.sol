@@ -1,20 +1,24 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import {MetaMorphoFactory} from "../lib/metamorpho/src/MetaMorphoFactory.sol";
+import {IMetaMorphoFactory} from "../lib/metamorpho/src/interfaces/IMetaMorphoFactory.sol";
 
 import "./ConfiguredScript.sol";
 
 contract DeployMetaMorphoFactory is ConfiguredScript {
-    MetaMorphoFactory internal metaMorphoFactory;
+    IMetaMorphoFactory internal metaMorphoFactory;
 
-    function run(string memory network) public {
-        DeployConfig memory config = _initConfig(network, true);
-
-        console2.log("Running deployment script using %s...", msg.sender);
+    function run(string memory network) public returns (DeployConfig memory config) {
+        config = _init(network, true);
 
         vm.broadcast();
-        metaMorphoFactory = new MetaMorphoFactory{salt: config.salt}(address(morpho));
+        metaMorphoFactory = IMetaMorphoFactory(
+            _deployCreate2Code(
+                "lib/metamorpho/out/MetaMorphoFactory.sol/MetaMorphoFactory.json",
+                abi.encode(address(morpho)),
+                config.salt.metamorphoFactory
+            )
+        );
 
         console2.log("Deployed MetaMorphoFactory at: %s", address(metaMorphoFactory));
     }

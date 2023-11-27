@@ -14,4 +14,17 @@ contract DeployMorphoEthereumTest is DeployMorpho, Test {
     function testOwner() public {
         assertEq(morpho.owner(), 0xcBa28b38103307Ec8dA98377ffF9816C164f9AFa);
     }
+
+    function testAddress() public {
+        DeployConfig memory config = _loadConfig("ethereum", false);
+
+        assertEq(
+            address(morpho),
+            computeCreate2Address(
+                config.salt.morpho,
+                hashInitCode(vm.getCode("lib/morpho-blue/out/Morpho.sol/Morpho.json"), abi.encode(msg.sender)),
+                0x4e59b44847b379578588920cA78FbF26c0B4956C
+            )
+        );
+    }
 }
