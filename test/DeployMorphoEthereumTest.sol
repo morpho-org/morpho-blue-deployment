@@ -31,4 +31,11 @@ contract DeployMorphoEthereumTest is DeployMorpho, Test {
     function testIrmEnabled() public {
         assertTrue(morpho.isIrmEnabled(address(irm)));
     }
+
+    function testLltvEnabled() public {
+        assertTrue(morpho.isLltvEnabled(0), "0%");
+        assertFalse(morpho.isLltvEnabled(94.5 ether), "94.5%");
+        assertFalse(morpho.isLltvEnabled(96.5 ether), "96.5%");
+        assertFalse(morpho.isLltvEnabled(1 ether), "100%");
+    }
 }
