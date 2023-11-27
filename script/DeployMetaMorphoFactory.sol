@@ -5,10 +5,10 @@ import {MetaMorphoFactory} from "../lib/metamorpho/src/MetaMorphoFactory.sol";
 
 import "./ConfiguredScript.sol";
 
-contract DeployMetaMorpho is ConfiguredScript {
+contract DeployMetaMorphoFactory is ConfiguredScript {
     MetaMorphoFactory internal metaMorphoFactory;
 
-    function run(string memory network) external {
+    function run(string memory network) public {
         DeployConfig memory config = _initConfig(network, true);
 
         console2.log("Running deployment script using %s...", msg.sender);

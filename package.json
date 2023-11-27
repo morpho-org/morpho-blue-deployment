@@ -8,7 +8,7 @@
     "script": "FOUNDRY_PROFILE=script forge script",
     "deploy:morpho": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn script script/DeployMorpho.sol --sig \"run(string memory)\"",
     "deploy:bundlers": "yarn build:bundlers && yarn script script/DeployBundlers.sol --sig \"run(string memory)\"",
-    "deploy:metamorpho": "yarn build:metamorpho && yarn script script/DeployMetaMorpho.sol --sig \"run(string memory)\"",
+    "deploy:metamorpho-factory": "yarn build:metamorpho && yarn script script/DeployMetaMorpho.sol --sig \"run(string memory)\"",
     "build:blue": "cd lib/morpho-blue/ && yarn build:forge && cd ../..",
     "build:irm": "cd lib/morpho-blue-irm/ && yarn build:forge && cd ../..",
     "build:oracles": "cd lib/morpho-blue-oracles/ && forge build && cd ../..",

@@ -12,7 +12,6 @@ struct OracleConfig {
     address baseFeed2;
     address quoteFeed1;
     address quoteFeed2;
-    address vault;
     uint256 vaultConversionSample;
 }
 

@@ -3,6 +3,13 @@ names = true
 sizes = true
 via-ir = false
 libs = ["node_modules", "lib"]
+fs_permissions = [
+    { access = "read", path = "./broadcast/DeployMorpho.sol/"},
+    { access = "read", path = "./script/config/"},
+    { access = "read", path = "./lib/morpho-blue-irm/out/"},
+    { access = "read", path = "./lib/morpho-blue-oracles/out/"},
+    { access = "read", path = "./lib/morpho-blue-bundlers/out/"}
+]
 
 [profile.default.fmt]
 wrap_comments = true
@@ -18,13 +25,6 @@ via-ir = false
 
 [profile.script]
 test = "/dev/null"
-fs_permissions = [
-    { access = "read", path = "./broadcast/DeployMorpho.sol/"},
-    { access = "read", path = "./script/config/"},
-    { access = "read", path = "./lib/morpho-blue-irm/out/"},
-    { access = "read", path = "./lib/morpho-blue-oracles/out/"},
-    { access = "read", path = "./lib/morpho-blue-bundlers/out/"}
-]
 
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/crates/config

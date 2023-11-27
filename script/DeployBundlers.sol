@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "./ConfiguredScript.sol";
 
 contract DeployBundlers is ConfiguredScript {
-    function run(string memory network) external {
+    function run(string memory network) public {
         DeployConfig memory config = _initConfig(network, true);
 
         console2.log("Running deployment script using %s...", msg.sender);

@@ -10,7 +10,7 @@ import "./ConfiguredScript.sol";
 contract DeployMorpho is ConfiguredScript {
     using MarketParamsLib for MarketParams;
 
-    function run(string memory network) external {
+    function run(string memory network) public {
         DeployConfig memory config = _initConfig(network, false);
 
         console2.log("Running deployment script using %s...", msg.sender);
@@ -67,7 +67,7 @@ contract DeployMorpho is ConfiguredScript {
                     oracle = deployCode(
                         "lib/morpho-blue-oracles/out/ChainlinkOracle.sol/ChainlinkOracle.json",
                         abi.encode(
-                            marketConfig.oracle.vault,
+                            marketConfig.oracle.vaultConversionSample > 1 ? marketConfig.collateralToken : address(0),
                             marketConfig.oracle.baseFeed1,
                             marketConfig.oracle.baseFeed2,
                             marketConfig.oracle.quoteFeed1,
