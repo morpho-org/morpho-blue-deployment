@@ -1,0 +1,35 @@
+[
+    {
+        "name": "EthereumBundler",
+        "args": []
+    },
+    {
+        "path": "AaveV2MigrationBundler",
+        "args": [
+            "0x0000000000000000000000007d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9"
+        ]
+    },
+    {
+        "path": "AaveV3MigrationBundler",
+        "args": [
+            "0x00000000000000000000000087870Bca3F3fD6335C3F4ce8392D69350B4fA4E2"
+        ]
+    },
+    {
+        "path": "AaveV3OptimizerMigrationBundler",
+        "args": [
+            "0x0000000000000000000000008888882f8f843896699869179fB6E4f7e3B58888"
+        ]
+    },
+    {
+        "path": "CompoundV2MigrationBundler",
+        "args": [
+            "0x000000000000000000000000C02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "0x0000000000000000000000004Ddc2D193948926D02f9B1fE9e1daa0718270ED5"
+        ]
+    },
+    {
+        "path": "CompoundV3MigrationBundler",
+        "args": []
+    }
+]

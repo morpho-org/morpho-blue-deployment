@@ -22,6 +22,7 @@ tenderly = "https://rpc.tenderly.co/fork/${TENDERLY_FORK_ID}"
 
 
 [profile.test]
+ffi = true
 via-ir = false
 
 
