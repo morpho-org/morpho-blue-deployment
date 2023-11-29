@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
 
-import {IOracle} from "../lib/morpho-blue/src/interfaces/IOracle.sol";
+import {IChainlinkOracle} from "../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
 import {IMorpho, MarketParams, Id} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
 import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
 
@@ -33,27 +33,40 @@ contract DeployOracle is ConfiguredScript {
         for (uint256 i; i < config.length; ++i) {
             OracleConfig memory oracleConfig = config[i];
 
+            address vault = oracleConfig.vaultConversionSample > 1 ? oracleConfig.collateralToken : address(0);
             uint256 baseTokenDecimals = IERC20(oracleConfig.collateralToken).decimals();
             uint256 quoteTokenDecimals = IERC20(oracleConfig.loanToken).decimals();
 
             vm.broadcast();
-            address oracle = deployCode(
-                "lib/morpho-blue-oracles/out/ChainlinkOracle.sol/ChainlinkOracle.json",
-                abi.encode(
-                    oracleConfig.vaultConversionSample > 1 ? oracleConfig.collateralToken : address(0),
-                    oracleConfig.baseFeed1,
-                    oracleConfig.baseFeed2,
-                    oracleConfig.quoteFeed1,
-                    oracleConfig.quoteFeed2,
-                    oracleConfig.vaultConversionSample,
-                    baseTokenDecimals,
-                    quoteTokenDecimals
+            IChainlinkOracle oracle = IChainlinkOracle(
+                deployCode(
+                    "lib/morpho-blue-oracles/out/ChainlinkOracle.sol/ChainlinkOracle.json",
+                    abi.encode(
+                        vault,
+                        oracleConfig.baseFeed1,
+                        oracleConfig.baseFeed2,
+                        oracleConfig.quoteFeed1,
+                        oracleConfig.quoteFeed2,
+                        oracleConfig.vaultConversionSample,
+                        baseTokenDecimals,
+                        quoteTokenDecimals
+                    )
                 )
             );
 
-            console2.log("  Deployed ChainlinkOracle for market [%s] at: %s", oracleConfig.name, oracle);
+            require(address(oracle.VAULT()) == vault, "unexpected vault");
+            require(
+                oracle.VAULT_CONVERSION_SAMPLE() == oracleConfig.vaultConversionSample,
+                "unexpected vault conversion sample"
+            );
+            require(address(oracle.BASE_FEED_1()) == oracleConfig.baseFeed1, "unexpected baseFeed1");
+            require(address(oracle.BASE_FEED_2()) == oracleConfig.baseFeed2, "unexpected baseFeed2");
+            require(address(oracle.QUOTE_FEED_1()) == oracleConfig.quoteFeed1, "unexpected quoteFeed1");
+            require(address(oracle.QUOTE_FEED_2()) == oracleConfig.quoteFeed2, "unexpected quoteFeed2");
 
-            uint256 price = IOracle(oracle).price();
+            console2.log("  Deployed ChainlinkOracle for market [%s] at: %s", oracleConfig.name, address(oracle));
+
+            uint256 price = oracle.price();
             uint256 priceRatio = price * 1 ether / oracleConfig.expectedPrice;
             require(priceRatio <= 10 ether, string.concat("price too high: ", vm.toString(price)));
             require(priceRatio >= 0.1 ether, string.concat("price too low: ", vm.toString(price)));

@@ -10,10 +10,10 @@ import "./config/ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
 struct AdaptiveCurveIrmConfig {
-    uint256 adjustmentSpeed;
-    uint256 curveSteepness;
-    uint256 initialRateAtTarget;
-    uint256 targetUtilization;
+    int256 adjustmentSpeed;
+    int256 curveSteepness;
+    int256 initialRateAtTarget;
+    int256 targetUtilization;
 }
 
 /// @dev Warning: keys must be ordered alphabetically.
@@ -57,10 +57,21 @@ contract DeployMorpho is ConfiguredScript {
             )
         );
 
+        require(irm.MORPHO() == address(morpho), "unexpected morpho");
+        require(irm.CURVE_STEEPNESS() == config.adaptiveCurveIrm.curveSteepness, "unexpected curve steepness");
+        require(irm.ADJUSTMENT_SPEED() == config.adaptiveCurveIrm.adjustmentSpeed, "unexpected adjustment speed");
+        require(irm.TARGET_UTILIZATION() == config.adaptiveCurveIrm.targetUtilization, "unexpected target utilization");
+        require(
+            irm.INITIAL_RATE_AT_TARGET() == config.adaptiveCurveIrm.initialRateAtTarget,
+            "unexpected initial rate at target"
+        );
+
         console2.log("Deployed AdaptiveCurveIrm at: %s", address(irm));
 
         vm.broadcast();
         morpho.enableIrm(address(irm));
+
+        require(morpho.isIrmEnabled(address(irm)), "irm not enabled");
 
         // Enable all LLTVs
         for (uint256 i; i < config.lltvs.length; ++i) {
@@ -70,6 +81,8 @@ contract DeployMorpho is ConfiguredScript {
 
             vm.broadcast();
             morpho.enableLltv(lltv);
+
+            require(morpho.isLltvEnabled(lltv), string.concat("lltv not enabled: ", vm.toString(lltv)));
         }
 
         // Transfer ownership
@@ -77,5 +90,7 @@ contract DeployMorpho is ConfiguredScript {
 
         vm.broadcast();
         morpho.setOwner(config.owner);
+
+        require(morpho.owner() == config.owner, "unexpected owner");
     }
 }
