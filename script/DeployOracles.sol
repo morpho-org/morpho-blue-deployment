@@ -12,8 +12,9 @@ struct OracleConfig {
     address baseFeed1;
     address baseFeed2;
     address collateralToken;
-    uint256 expectedPrice;
     address loanToken;
+    uint256 maxPrice;
+    uint256 minPrice;
     string name;
     address quoteFeed1;
     address quoteFeed2;
@@ -65,9 +66,8 @@ contract DeployOracle is ConfiguredScript {
             console2.log("  Deployed ChainlinkOracle for market [%s] at: %s", oracleConfig.name, address(oracle));
 
             uint256 price = oracle.price();
-            uint256 priceRatio = price * 1 ether / oracleConfig.expectedPrice;
-            require(priceRatio <= 10 ether, string.concat("price too high: ", vm.toString(price)));
-            require(priceRatio >= 0.1 ether, string.concat("price too low: ", vm.toString(price)));
+            require(price <= oracleConfig.maxPrice, string.concat("price too high: ", vm.toString(price)));
+            require(price >= oracleConfig.minPrice, string.concat("price too low: ", vm.toString(price)));
         }
     }
 }

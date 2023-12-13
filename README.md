@@ -17,12 +17,12 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 > It is advised to use a dedicated address whose only purpose is to deploy all contracts associated with Blue on each EVM-compatible chain, so that addresses are common across chains.
 
 - `yarn`
-- Add the desired network key and its corresponding RPC URL to `foundry.toml`
-- `yarn deploy:{component} {network} --broadcast` followed with appropriate private key management parameters
+- Add the desired network key and its corresponding RPC url to `foundry.toml`
+- `yarn deploy:{component} {network} --broadcast --slow --sender {sender}` followed with appropriate private key management parameters
 
-For example: `yarn deploy:morpho ethereum --broadcast --ledger`
+For example: `yarn deploy:morpho goerli --broadcast --slow --ledger --sender 0x7Ef4174aFdF4514F556439fa2822212278151Db6`
 
-All deployments that require an instance of Morpho expect that instance to have previously been deployed using `yarn deploy:morpho ethereum --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
+All deployments that require an instance of Morpho expects that instance to have previously been deployed on the same network using `yarn deploy:morpho {network} --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
 
 ## License
 
