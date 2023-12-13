@@ -16,7 +16,7 @@
     "build:oracles": "cd lib/morpho-blue-oracles/ && forge build && cd ../..",
     "build:bundlers": "cd lib/morpho-blue-bundlers/ && yarn build:forge && cd ../..",
     "build:metamorpho": "cd lib/metamorpho/ && yarn build:forge && cd ../..",
-    "test": "FOUNDRY_PROFILE=test forge test",
+    "test": "yarn build && FOUNDRY_PROFILE=test forge test",
     "lint": "forge fmt --check",
     "lint:fix": "forge fmt"
   },

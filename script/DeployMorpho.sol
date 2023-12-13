@@ -7,16 +7,7 @@ import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.
 import "./config/ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
-struct AdaptiveCurveIrmConfig {
-    int256 adjustmentSpeed;
-    int256 curveSteepness;
-    int256 initialRateAtTarget;
-    int256 targetUtilization;
-}
-
-/// @dev Warning: keys must be ordered alphabetically.
 struct DeployMorphoConfig {
-    AdaptiveCurveIrmConfig adaptiveCurveIrm;
     uint256[] lltvs;
     address owner;
     bytes32 salt;
@@ -44,25 +35,11 @@ contract DeployMorpho is ConfiguredScript {
         vm.broadcast();
         irm = IAdaptiveCurveIrm(
             deployCode(
-                "lib/morpho-blue-irm/out/AdaptiveCurveIrm.sol/AdaptiveCurveIrm.json",
-                abi.encode(
-                    address(morpho),
-                    config.adaptiveCurveIrm.curveSteepness,
-                    config.adaptiveCurveIrm.adjustmentSpeed,
-                    config.adaptiveCurveIrm.targetUtilization,
-                    config.adaptiveCurveIrm.initialRateAtTarget
-                )
+                "lib/morpho-blue-irm/out/AdaptiveCurveIrm.sol/AdaptiveCurveIrm.json", abi.encode(address(morpho))
             )
         );
 
         require(irm.MORPHO() == address(morpho), "unexpected morpho");
-        require(irm.CURVE_STEEPNESS() == config.adaptiveCurveIrm.curveSteepness, "unexpected curve steepness");
-        require(irm.ADJUSTMENT_SPEED() == config.adaptiveCurveIrm.adjustmentSpeed, "unexpected adjustment speed");
-        require(irm.TARGET_UTILIZATION() == config.adaptiveCurveIrm.targetUtilization, "unexpected target utilization");
-        require(
-            irm.INITIAL_RATE_AT_TARGET() == config.adaptiveCurveIrm.initialRateAtTarget,
-            "unexpected initial rate at target"
-        );
 
         console2.log("Deployed AdaptiveCurveIrm at: %s", address(irm));
 
