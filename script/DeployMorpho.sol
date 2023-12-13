@@ -24,24 +24,12 @@ contract DeployMorpho is ConfiguredScript {
         config = abi.decode(_init(network, false), (DeployMorphoConfig));
 
         // Deploy Morpho Blue
-        vm.broadcast();
-        morpho = IMorpho(
-            _deployCreate2Code("lib/morpho-blue/out/Morpho.sol/Morpho.json", abi.encode(msg.sender), config.salt)
-        );
-
-        console2.log("Deployed Morpho Blue at: %s", address(morpho));
+        morpho = IMorpho(_deployCreate2Code("morpho-blue", "Morpho", abi.encode(msg.sender), config.salt));
 
         // Deploy & enable AdaptiveCurveIrm
-        vm.broadcast();
-        irm = IAdaptiveCurveIrm(
-            deployCode(
-                "lib/morpho-blue-irm/out/AdaptiveCurveIrm.sol/AdaptiveCurveIrm.json", abi.encode(address(morpho))
-            )
-        );
+        irm = IAdaptiveCurveIrm(_deployCode("morpho-blue-irm", "AdaptiveCurveIrm", abi.encode(address(morpho))));
 
         require(irm.MORPHO() == address(morpho), "unexpected morpho");
-
-        console2.log("Deployed AdaptiveCurveIrm at: %s", address(irm));
 
         vm.broadcast();
         morpho.enableIrm(address(irm));

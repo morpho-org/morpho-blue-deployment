@@ -20,15 +20,9 @@ contract DeployMetaMorphoFactory is ConfiguredScript {
     function run(string memory network) public returns (DeployMetaMorphoFactoryConfig memory config) {
         config = abi.decode(_init(network, true), (DeployMetaMorphoFactoryConfig));
 
-        vm.broadcast();
-        metaMorphoFactory = IMetaMorphoFactory(
-            _deployCreate2Code(
-                "lib/metamorpho/out/MetaMorphoFactory.sol/MetaMorphoFactory.json",
-                abi.encode(address(morpho)),
-                config.salt
-            )
-        );
+        bytes memory constructorArgs = abi.encode(address(morpho));
 
-        console2.log("Deployed MetaMorphoFactory at: %s", address(metaMorphoFactory));
+        metaMorphoFactory =
+            IMetaMorphoFactory(_deployCreate2Code("metamorpho", "MetaMorphoFactory", constructorArgs, config.salt));
     }
 }

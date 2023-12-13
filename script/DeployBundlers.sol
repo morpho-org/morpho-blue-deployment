@@ -26,13 +26,7 @@ contract DeployBundlers is ConfiguredScript {
                 constructorArgs = bytes.concat(constructorArgs, abi.encode(bundlerConfig.args[j]));
             }
 
-            vm.broadcast();
-            address bundler = deployCode(
-                string.concat("lib/morpho-blue-bundlers/out/", bundlerConfig.name, ".sol/", bundlerConfig.name, ".json"),
-                constructorArgs
-            );
-
-            console2.log("Deployed %s at: %s", bundlerConfig.name, bundler);
+            _deployCode("morpho-blue-bundlers", bundlerConfig.name, constructorArgs);
         }
     }
 }
