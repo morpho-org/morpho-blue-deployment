@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
 
 import {IChainlinkOracle} from "../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
-import {IMorpho, MarketParams, Id} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
-import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
 
 import "./config/ConfiguredScript.sol";
 
