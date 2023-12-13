@@ -18,12 +18,12 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 
 - `yarn`
 - Add the desired network key and its corresponding RPC url to `foundry.toml`
-- `yarn deploy:{component} {network} --broadcast` followed with appropriate private key management parameters
+- `yarn deploy:{component} {network} --broadcast --slow --sender {sender}` followed with appropriate private key management parameters
 
-For example: `yarn deploy:morpho ethereum --broadcast --ledger`
+For example: `yarn deploy:morpho goerli --broadcast --slow --ledger --sender 0x7Ef4174aFdF4514F556439fa2822212278151Db6`
 
-All deployments that requires an instance of Morpho expects that instance to have previously been deployed using `yarn deploy:morpho ethereum --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
+All deployments that require an instance of Morpho expects that instance to have previously been deployed on the same network using `yarn deploy:morpho {network} --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
 
-## Licence
+## License
 
 All scripts are licensed under [`GPL-2.0-or-later`](./LICENSE).

@@ -4,8 +4,6 @@ pragma solidity ^0.8.0;
 import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
 
 import {IChainlinkOracle} from "../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
-import {IMorpho, MarketParams, Id} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
-import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
 
 import "./config/ConfiguredScript.sol";
 
@@ -14,8 +12,9 @@ struct OracleConfig {
     address baseFeed1;
     address baseFeed2;
     address collateralToken;
-    uint256 expectedPrice;
     address loanToken;
+    uint256 maxPrice;
+    uint256 minPrice;
     string name;
     address quoteFeed1;
     address quoteFeed2;
@@ -67,9 +66,8 @@ contract DeployOracle is ConfiguredScript {
             console2.log("  Deployed ChainlinkOracle for market [%s] at: %s", oracleConfig.name, address(oracle));
 
             uint256 price = oracle.price();
-            uint256 priceRatio = price * 1 ether / oracleConfig.expectedPrice;
-            require(priceRatio <= 10 ether, string.concat("price too high: ", vm.toString(price)));
-            require(priceRatio >= 0.1 ether, string.concat("price too low: ", vm.toString(price)));
+            require(price <= oracleConfig.maxPrice, string.concat("price too high: ", vm.toString(price)));
+            require(price >= oracleConfig.minPrice, string.concat("price too low: ", vm.toString(price)));
         }
     }
 }

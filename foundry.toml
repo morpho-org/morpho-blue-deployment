@@ -1,8 +1,6 @@
 [profile.default]
-names = true
-sizes = true
 via-ir = false
-libs = ["node_modules", "lib"]
+libs = ["lib"]
 fs_permissions = [
     { access = "read", path = "./broadcast/DeployMorpho.sol/"},
     { access = "read", path = "./script/config/"},
