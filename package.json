@@ -4,7 +4,7 @@
   "license": "GPL-2.0-or-later",
   "version": "0.0.0",
   "scripts": {
-    "prepare": "husky install && forge install && yarn build",
+    "prepare": "husky install && forge install",
     "script": "FOUNDRY_PROFILE=script forge script",
     "deploy:morpho": "yarn build:blue && yarn build:irm && yarn script script/DeployMorpho.sol --sig \"run(string memory)\"",
     "deploy:bundlers": "yarn build:bundlers && yarn script script/DeployBundlers.sol --sig \"run(string memory)\"",
