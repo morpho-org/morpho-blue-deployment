@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import "./config/ConfiguredScript.sol";
+import "../ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
 struct BundlerConfig {
@@ -10,7 +10,7 @@ struct BundlerConfig {
 }
 
 contract DeployBundlers is ConfiguredScript {
-    function _configDir() internal pure override returns (string memory) {
+    function _scriptDir() internal pure override returns (string memory) {
         return "bundlers";
     }
 

@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import "../script/DeployMorpho.sol";
+import "../../script/morpho/DeployMorpho.sol";
 
-import "../lib/forge-std/src/Test.sol";
+import "../../lib/forge-std/src/Test.sol";
 
 contract DeployMorphoEthereumTest is DeployMorpho, Test {
     DeployMorphoConfig internal config;
+
+    constructor() {
+        SAVE_VERIFY = false;
+    }
 
     function setUp() public {
         config = run("ethereum");

@@ -1,21 +1,23 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import {IMorpho} from "../../lib/morpho-blue/src/interfaces/IMorpho.sol";
-import {IAdaptiveCurveIrm} from "../../lib/morpho-blue-irm/src/interfaces/IAdaptiveCurveIrm.sol";
+import {IMorpho} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
+import {IAdaptiveCurveIrm} from "../lib/morpho-blue-irm/src/interfaces/IAdaptiveCurveIrm.sol";
 
-import "../../lib/forge-std/src/Script.sol";
-import "../../lib/forge-std/src/console2.sol";
+import "../lib/forge-std/src/Script.sol";
+import "../lib/forge-std/src/console2.sol";
 
 abstract contract ConfiguredScript is Script {
     using stdJson for string;
+
+    bool internal immutable SAVE_VERIFY = true;
 
     string internal configPath;
 
     IMorpho internal morpho;
     IAdaptiveCurveIrm internal irm;
 
-    function _configDir() internal view virtual returns (string memory);
+    function _scriptDir() internal view virtual returns (string memory);
 
     function _init(string memory network, bool requireMorpho) internal returns (bytes memory) {
         vm.createSelectFork(vm.rpcUrl(network));
@@ -26,7 +28,7 @@ abstract contract ConfiguredScript is Script {
     }
 
     function _loadConfig(string memory network, bool requireMorpho) internal returns (bytes memory) {
-        configPath = string.concat("script/config/", _configDir(), "/", network, ".json");
+        configPath = string.concat("script/", _scriptDir(), "/config/", network, ".json");
 
         string memory latestRunPath =
             string.concat("broadcast/DeployMorpho.sol/", vm.toString(block.chainid), "/run-latest.json");
@@ -69,22 +71,29 @@ abstract contract ConfiguredScript is Script {
         _logDeployment(submodule, what, args, addr);
     }
 
-    function _logDeployment(string memory submodule, string memory what, bytes memory args, address addr)
-        internal
-        view
-    {
+    function _logDeployment(string memory submodule, string memory what, bytes memory args, address addr) internal {
         console2.log("Deployed %s at: %s", what, addr);
-
-        console2.log("");
         console2.log("Verify %s using:", what);
-        console2.log("  > cd %s/", submodule);
-        console2.log(
-            "  > forge verify-contract --chain-id %s --constructor-args %s",
-            vm.toString(block.chainid),
-            vm.toString(args),
-            string.concat(vm.toString(addr), " src/", what, ".sol:", what)
+        console2.log("  > yarn verify:%s", _scriptDir());
+
+        if (!SAVE_VERIFY) return;
+
+        string memory verifyPath = string.concat("script/", _scriptDir(), "/verify.sh");
+        vm.writeLine(verifyPath, "");
+        vm.writeLine(verifyPath, string.concat("cd ", submodule, "/"));
+        vm.writeLine(
+            verifyPath,
+            string.concat(
+                "forge verify-contract --chain-id ",
+                vm.toString(block.chainid),
+                " --constructor-args ",
+                vm.toString(args),
+                vm.toString(addr),
+                " src/",
+                what,
+                ".sol:",
+                what
+            )
         );
-        console2.log("  > cd ../../");
-        console2.log("");
     }
 }

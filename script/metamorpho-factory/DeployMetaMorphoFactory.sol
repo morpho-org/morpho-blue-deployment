@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import {IMetaMorphoFactory} from "../lib/metamorpho/src/interfaces/IMetaMorphoFactory.sol";
+import {IMetaMorphoFactory} from "../../lib/metamorpho/src/interfaces/IMetaMorphoFactory.sol";
 
-import "./config/ConfiguredScript.sol";
+import "../ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
 struct DeployMetaMorphoFactoryConfig {
@@ -13,7 +13,7 @@ struct DeployMetaMorphoFactoryConfig {
 contract DeployMetaMorphoFactory is ConfiguredScript {
     IMetaMorphoFactory internal metaMorphoFactory;
 
-    function _configDir() internal pure override returns (string memory) {
+    function _scriptDir() internal pure override returns (string memory) {
         return "metamorpho-factory";
     }
 
