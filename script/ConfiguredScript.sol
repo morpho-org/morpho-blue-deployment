@@ -73,21 +73,22 @@ abstract contract ConfiguredScript is Script {
 
     function _logDeployment(string memory submodule, string memory what, bytes memory args, address addr) internal {
         console2.log("Deployed %s at: %s", what, addr);
-        console2.log("Verify %s using:", what);
-        console2.log("  > yarn verify:%s", _scriptDir());
+        console2.log("Verify %s using:  > yarn verify:%s", _scriptDir());
 
         if (!SAVE_VERIFY) return;
 
         string memory verifyPath = string.concat("script/", _scriptDir(), "/verify.sh");
         vm.writeLine(verifyPath, "");
-        vm.writeLine(verifyPath, string.concat("cd ", submodule, "/"));
+        vm.writeLine(verifyPath, string.concat("if cd lib/", submodule, "/;"));
+        vm.writeLine(verifyPath, "then");
         vm.writeLine(
             verifyPath,
             string.concat(
-                "forge verify-contract --chain-id ",
+                "  forge verify-contract --chain-id ",
                 vm.toString(block.chainid),
                 " --constructor-args ",
                 vm.toString(args),
+                " ",
                 vm.toString(addr),
                 " src/",
                 what,
@@ -95,5 +96,7 @@ abstract contract ConfiguredScript is Script {
                 what
             )
         );
+        vm.writeLine(verifyPath, "  cd ../../");
+        vm.writeLine(verifyPath, "fi");
     }
 }
