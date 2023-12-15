@@ -27,6 +27,12 @@ goerli = "https://eth-goerli.g.alchemy.com/v2/${ALCHEMY_KEY}"
 sepolia = "https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}"
 
 
+[profile.build]
+via-ir = true
+test = "/dev/null"
+script = "/dev/null"
+
+
 [profile.test]
 ffi = true
 via-ir = false

@@ -1,7 +1,7 @@
 {
   "name": "morpho-blue-deployment",
   "description": "Morpho Blue Deployment",
-  "license": "GPL-2.0-or-later",
+  "license": "MIT",
   "version": "0.0.0",
   "scripts": {
     "prepare": "husky install && forge install",
@@ -14,13 +14,14 @@
     "verify:bundlers": "./script/bundlers/verify.sh",
     "verify:metamorpho-factory": "./script/metamorpho-factory/verify.sh",
     "verify:oracles": "./script/oracles/verify.sh",
-    "build": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn build:metamorpho",
+    "build": "FOUNDRY_PROFILE=build forge build",
+    "build:all": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn build:metamorpho",
     "build:blue": "cd lib/morpho-blue/ && yarn build:forge",
     "build:irm": "cd lib/morpho-blue-irm/ && forge build",
     "build:oracles": "cd lib/morpho-blue-oracles/ && forge build",
     "build:bundlers": "cd lib/morpho-blue-bundlers/ && yarn build:forge",
     "build:metamorpho": "cd lib/metamorpho/ && yarn build:forge",
-    "test": "yarn build && FOUNDRY_PROFILE=test forge test",
+    "test": "yarn build:all && FOUNDRY_PROFILE=test forge test",
     "lint": "forge fmt --check",
     "lint:fix": "forge fmt"
   },
