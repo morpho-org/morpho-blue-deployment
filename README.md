@@ -13,9 +13,6 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 
 ## Getting Started
 
-> [!IMPORTANT]
-> It is advised to use a dedicated address whose only **lifetime** purpose is to deploy all contracts associated with Blue on each EVM-compatible chain, so that addresses are common across chains.
-
 ### Installation
 
 - `yarn`

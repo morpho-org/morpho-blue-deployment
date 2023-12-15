@@ -7,6 +7,7 @@ import "../ConfiguredScript.sol";
 struct BundlerConfig {
     bytes32[] args;
     string name;
+    bytes32 salt;
 }
 
 contract DeployBundlers is ConfiguredScript {
@@ -26,7 +27,7 @@ contract DeployBundlers is ConfiguredScript {
                 constructorArgs = bytes.concat(constructorArgs, abi.encode(bundlerConfig.args[j]));
             }
 
-            _deployCode("morpho-blue-bundlers", bundlerConfig.name, constructorArgs);
+            _deployCreate2Code("morpho-blue-bundlers", bundlerConfig.name, constructorArgs, bundlerConfig.salt);
         }
     }
 }
