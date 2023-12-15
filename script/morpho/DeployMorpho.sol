@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import {IMorpho, MarketParams} from "../lib/morpho-blue/src/interfaces/IMorpho.sol";
-import {MarketParamsLib} from "../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
+import {IMorpho, MarketParams} from "../../lib/morpho-blue/src/interfaces/IMorpho.sol";
+import {MarketParamsLib} from "../../lib/morpho-blue/src/libraries/MarketParamsLib.sol";
 
-import "./config/ConfiguredScript.sol";
+import "../ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
 struct DeployMorphoConfig {
@@ -16,7 +16,7 @@ struct DeployMorphoConfig {
 contract DeployMorpho is ConfiguredScript {
     using MarketParamsLib for MarketParams;
 
-    function _configDir() internal pure override returns (string memory) {
+    function _scriptDir() internal pure override returns (string memory) {
         return "morpho";
     }
 
