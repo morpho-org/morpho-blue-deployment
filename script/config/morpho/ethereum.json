@@ -1,12 +1,6 @@
 {
     "owner": "0x6ABfd6139c7C3CC270ee2Ce132E309F59cAaF6a2",
     "salt": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "adaptiveCurveIrm": {
-        "adjustmentSpeed": 1585489599188,
-        "curveSteepness": 4000000000000000000,
-        "initialRateAtTarget": 317097919,
-        "targetUtilization": 900000000000000000
-    },
     "lltvs": [
         0,
         385000000000000000,
