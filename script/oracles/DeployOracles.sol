@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import {IERC20} from "../lib/forge-std/src/interfaces/IERC20.sol";
+import {IERC20} from "../../lib/forge-std/src/interfaces/IERC20.sol";
+import {IChainlinkOracle} from "../../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
 
-import {IChainlinkOracle} from "../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
-
-import "./config/ConfiguredScript.sol";
+import "../ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
 struct OracleConfig {
@@ -22,7 +21,7 @@ struct OracleConfig {
 }
 
 contract DeployOracle is ConfiguredScript {
-    function _configDir() internal pure override returns (string memory) {
+    function _scriptDir() internal pure override returns (string memory) {
         return "oracles";
     }
 

@@ -14,15 +14,43 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 ## Getting Started
 
 > [!IMPORTANT]
-> It is advised to use a dedicated address whose only purpose is to deploy all contracts associated with Blue on each EVM-compatible chain, so that addresses are common across chains.
+> It is advised to use a dedicated account whose only **lifetime** purpose is to deploy all contracts associated with Blue on each EVM-compatible chain so that deployed contract addresses are common across chains.
+
+### Installation
 
 - `yarn`
+- `cp .env.example .env`
+
+### Deployment
+
 - Add the desired network key and its corresponding RPC url to `foundry.toml`
 - `yarn deploy:{component} {network} --broadcast --slow --sender {sender}` followed with appropriate private key management parameters
+
+> [!NOTE]
+> If the provided network's RPC url uses a variable environment (such as `ALCHEMY_KEY`), it should be defined in your `.env`
 
 For example: `yarn deploy:morpho goerli --broadcast --slow --ledger --sender 0x7Ef4174aFdF4514F556439fa2822212278151Db6`
 
 All deployments that require an instance of Morpho expects that instance to have previously been deployed on the same network using `yarn deploy:morpho {network} --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
+
+> [!NOTE]
+> Broadcast run logs are to be committed to this repository for future reference.
+
+
+### Etherscan verification
+
+> [!NOTE]
+> Your `.env` should contain a valid `ETHERSCAN_API_KEY`.
+
+After each contract deployed, a verification command is automatically added to the verify script associated to the component deployed (for example: [`script/morpho/verify.sh`](script/morpho/verify.sh)).
+
+- Verify all contracts deployed for a component: `yarn verify:{component}`
+
+For example: `yarn verify:morpho`
+
+> [!NOTE]
+> Verify scripts are **NOT** to be committed to this repository because they are expected to be run only once.
+
 
 ## License
 
