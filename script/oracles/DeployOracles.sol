@@ -17,6 +17,7 @@ struct OracleConfig {
     string name;
     address quoteFeed1;
     address quoteFeed2;
+    bytes32 salt;
     uint256 vaultConversionSample;
 }
 
@@ -39,7 +40,7 @@ contract DeployOracle is ConfiguredScript {
 
             vm.broadcast();
             IChainlinkOracle oracle = IChainlinkOracle(
-                _deployCode(
+                _deployCreate2Code(
                     "morpho-blue-oracles",
                     "ChainlinkOracle",
                     abi.encode(
@@ -51,7 +52,8 @@ contract DeployOracle is ConfiguredScript {
                         oracleConfig.vaultConversionSample,
                         baseTokenDecimals,
                         quoteTokenDecimals
-                    )
+                    ),
+                    oracleConfig.salt
                 )
             );
 

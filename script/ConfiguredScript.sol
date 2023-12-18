@@ -44,16 +44,6 @@ abstract contract ConfiguredScript is Script {
         return vm.parseJson(vm.readFile(configPath));
     }
 
-    function _deployCode(string memory submodule, string memory what, bytes memory args)
-        internal
-        returns (address addr)
-    {
-        vm.broadcast();
-        addr = deployCode(string.concat("lib/", submodule, "/out/", what, ".sol/", what, ".json"), args);
-
-        _logDeployment(submodule, what, args, addr);
-    }
-
     function _deployCreate2Code(string memory submodule, string memory what, bytes memory args, bytes32 salt)
         internal
         returns (address addr)

@@ -7,10 +7,16 @@ import {MarketParamsLib} from "../../lib/morpho-blue/src/libraries/MarketParamsL
 import "../ConfiguredScript.sol";
 
 /// @dev Warning: keys must be ordered alphabetically.
+struct DeployMorphoSalt {
+    bytes32 irm;
+    bytes32 morpho;
+}
+
+/// @dev Warning: keys must be ordered alphabetically.
 struct DeployMorphoConfig {
     uint256[] lltvs;
     address owner;
-    bytes32 salt;
+    DeployMorphoSalt salt;
 }
 
 contract DeployMorpho is ConfiguredScript {
@@ -24,10 +30,12 @@ contract DeployMorpho is ConfiguredScript {
         config = abi.decode(_init(network, false), (DeployMorphoConfig));
 
         // Deploy Morpho Blue
-        morpho = IMorpho(_deployCreate2Code("morpho-blue", "Morpho", abi.encode(msg.sender), config.salt));
+        morpho = IMorpho(_deployCreate2Code("morpho-blue", "Morpho", abi.encode(msg.sender), config.salt.morpho));
 
         // Deploy & enable AdaptiveCurveIrm
-        irm = IAdaptiveCurveIrm(_deployCode("morpho-blue-irm", "AdaptiveCurveIrm", abi.encode(address(morpho))));
+        irm = IAdaptiveCurveIrm(
+            _deployCreate2Code("morpho-blue-irm", "AdaptiveCurveIrm", abi.encode(address(morpho)), config.salt.irm)
+        );
 
         require(irm.MORPHO() == address(morpho), "unexpected morpho");
 
