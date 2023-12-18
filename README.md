@@ -51,4 +51,4 @@ For example: `yarn verify:morpho`
 
 ## License
 
-All scripts are licensed under [`MIT`](./LICENSE).
+All scripts are licensed under [`GPL-2.0-or-later`](./LICENSE).
