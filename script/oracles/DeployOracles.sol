@@ -38,7 +38,6 @@ contract DeployOracle is ConfiguredScript {
             uint256 baseTokenDecimals = IERC20(oracleConfig.collateralToken).decimals();
             uint256 quoteTokenDecimals = IERC20(oracleConfig.loanToken).decimals();
 
-            vm.broadcast();
             IChainlinkOracle oracle = IChainlinkOracle(
                 _deployCreate2Code(
                     "morpho-blue-oracles",
