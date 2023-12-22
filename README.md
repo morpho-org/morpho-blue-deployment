@@ -15,18 +15,24 @@ The protocol is described in detail in the [Morpho Blue Whitepaper](./morpho-blu
 
 ### Installation
 
-- `yarn`
-- `cp .env.example .env`
+```bash
+yarn
+cp .env.example .env
+```
 
 ### Deployment
 
 - Add the desired network key and its corresponding RPC url to `foundry.toml`
-- `yarn deploy:{component} {network} --broadcast --slow --sender {sender}` followed with appropriate private key management parameters
+- `yarn deploy:{component} {network} --broadcast --sender {sender}` followed with appropriate private key management parameters
 
 > [!NOTE]
 > If the provided network's RPC url uses a variable environment (such as `ALCHEMY_KEY`), it should be defined in your `.env`
 
-For example: `yarn deploy:morpho goerli --broadcast --slow --ledger --sender 0x7Ef4174aFdF4514F556439fa2822212278151Db6`
+For example:
+
+```bash
+yarn deploy:morpho goerli --broadcast --ledger --sender 0x7Ef4174aFdF4514F556439fa2822212278151Db6
+```
 
 All deployments that require an instance of Morpho expects that instance to have previously been deployed on the same network using `yarn deploy:morpho {network} --broadcast`, so that Morpho's address is saved and committed to this repository in [broadcast logs](./broadcast/DeployMorpho.sol/1/run-latest.json).
 
@@ -43,7 +49,11 @@ After each contract deployed, a verification command is automatically added to t
 
 - Verify all contracts deployed for a component: `yarn verify:{component}`
 
-For example: `yarn verify:morpho`
+For example:
+
+```bash
+yarn verify:morpho
+```
 
 > [!NOTE]
 > Verify scripts are **NOT** to be committed to this repository because they are expected to be run only once.
