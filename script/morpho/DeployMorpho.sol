@@ -41,8 +41,11 @@ contract DeployMorpho is ConfiguredScript {
 
         vm.broadcast();
         morpho.enableIrm(address(irm));
+        vm.broadcast();
+        morpho.enableIrm(address(0));
 
         require(morpho.isIrmEnabled(address(irm)), "irm not enabled");
+        require(morpho.isIrmEnabled(address(0)), "address(0) not enabled");
 
         // Enable all LLTVs
         for (uint256 i; i < config.lltvs.length; ++i) {
