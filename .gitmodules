@@ -1,9 +1,3 @@
-[submodule "lib/morpho-blue"]
-	path = lib/morpho-blue
-	url = https://github.com/morpho-org/morpho-blue
-[submodule "lib/morpho-blue-irm"]
-	path = lib/morpho-blue-irm
-	url = https://github.com/morpho-org/morpho-blue-irm
 [submodule "lib/morpho-blue-oracles"]
 	path = lib/morpho-blue-oracles
 	url = https://github.com/morpho-org/morpho-blue-oracles
@@ -16,3 +10,9 @@
 [submodule "lib/morpho-blue-bundlers"]
 	path = lib/morpho-blue-bundlers
 	url = https://github.com/morpho-org/morpho-blue-bundlers
+[submodule "lib/morpho-blue"]
+	path = lib/morpho-blue
+	url = https://github.com/morpho-org/morpho-blue
+[submodule "lib/morpho-blue-irm"]
+	path = lib/morpho-blue-irm
+	url = https://github.com/morpho-org/morpho-blue-irm
