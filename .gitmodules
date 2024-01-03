@@ -1,9 +1,6 @@
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "lib/metamorpho"]
-	path = lib/metamorpho
-	url = https://github.com/morpho-org/metamorpho
 [submodule "lib/morpho-blue"]
 	path = lib/morpho-blue
 	url = https://github.com/morpho-org/morpho-blue
@@ -16,3 +13,6 @@
 [submodule "lib/morpho-blue-bundlers"]
 	path = lib/morpho-blue-bundlers
 	url = https://github.com/morpho-org/morpho-blue-bundlers
+[submodule "lib/metamorpho"]
+	path = lib/metamorpho
+	url = https://github.com/morpho-org/metamorpho
