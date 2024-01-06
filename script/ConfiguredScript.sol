@@ -30,13 +30,12 @@ abstract contract ConfiguredScript is Script {
     function _loadConfig(string memory network, bool requireMorpho) internal returns (bytes memory) {
         configPath = string.concat("script/", _scriptDir(), "/config/", network, ".json");
 
-        string memory latestRunPath =
-            string.concat("broadcast/DeployMorpho.sol/", vm.toString(block.chainid), "/run-latest.json");
+        string memory morphoAddressPath = string.concat("script/", _scriptDir(), "/config/", network, "-morpho.json");
 
-        if (vm.exists(latestRunPath)) {
-            string memory latestRun = vm.readFile(latestRunPath);
+        if (vm.exists(morphoAddressPath)) {
+            string memory file = vm.readFile(morphoAddressPath);
 
-            morpho = IMorpho(latestRun.readAddress("$.transactions[0].contractAddress"));
+            morpho = IMorpho(file.readAddress("$.contractAddress"));
         } else {
             require(!requireMorpho, "missing Morpho deployment");
         }
