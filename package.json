@@ -17,7 +17,7 @@
     "build": "FOUNDRY_PROFILE=build forge build",
     "build:all": "yarn build:blue && yarn build:irm && yarn build:oracles && yarn build:metamorpho",
     "build:blue": "cd lib/morpho-blue/ && yarn build:forge",
-    "build:irm": "cd lib/morpho-blue-irm/ && forge build",
+    "build:irm": "cd lib/morpho-blue-irm/ && yarn build:forge",
     "build:oracles": "cd lib/morpho-blue-oracles/ && forge build",
     "build:bundlers": "cd lib/morpho-blue-bundlers/ && yarn build:forge",
     "build:metamorpho": "cd lib/metamorpho/ && yarn build:forge",
