@@ -4,11 +4,11 @@ libs = ["lib"]
 fs_permissions = [
     { access = "read", path = "./broadcast/DeployMorpho.sol/"},
     { access = "read", path = "./script/morpho/config/"},
-    { access = "read", path = "./script/oracles/config/"},
+    { access = "read", path = "./script/oracle-factory/config/"},
     { access = "read", path = "./script/bundlers/config/"},
     { access = "read", path = "./script/metamorpho-factory/config/"},
     { access = "write", path = "./script/morpho/verify.sh"},
-    { access = "write", path = "./script/oracles/verify.sh"},
+    { access = "write", path = "./script/oracle-factory/verify.sh"},
     { access = "write", path = "./script/bundlers/verify.sh"},
     { access = "write", path = "./script/metamorpho-factory/verify.sh"},
     { access = "read", path = "./lib/morpho-blue/out/"},
