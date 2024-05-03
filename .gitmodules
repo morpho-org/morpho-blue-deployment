@@ -19,3 +19,6 @@
 [submodule "lib/universal-rewards-distributor"]
 	path = lib/universal-rewards-distributor
 	url = https://github.com/morpho-org/universal-rewards-distributor
+[submodule "lib/public-allocator"]
+	path = lib/public-allocator
+	url = https://github.com/morpho-org/public-allocator

@@ -8,17 +8,20 @@ fs_permissions = [
     { access = "read", path = "./script/bundlers/config/"},
     { access = "read", path = "./script/metamorpho-factory/config/"},
     { access = "read", path = "./script/urd-factory/config/"},
+    { access = "read", path = "./script/public-allocator/config/"},
     { access = "write", path = "./script/morpho/verify.sh"},
     { access = "write", path = "./script/oracle-factory/verify.sh"},
     { access = "write", path = "./script/bundlers/verify.sh"},
     { access = "write", path = "./script/metamorpho-factory/verify.sh"},
     { access = "write", path = "./script/urd-factory/verify.sh"},
+    { access = "write", path = "./script/public-allocator/verify.sh"},
     { access = "read", path = "./lib/morpho-blue/out/"},
     { access = "read", path = "./lib/morpho-blue-irm/out/"},
     { access = "read", path = "./lib/morpho-blue-oracles/out/"},
     { access = "read", path = "./lib/morpho-blue-bundlers/out/"},
     { access = "read", path = "./lib/metamorpho/out/"},
-    { access = "read", path = "./lib/universal-rewards-distributor/out/"}
+    { access = "read", path = "./lib/universal-rewards-distributor/out/"},
+    { access = "read", path = "./lib/public-allocator/out/"}
 ]
 
 [profile.default.fmt]
