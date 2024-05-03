@@ -20,7 +20,7 @@ contract DeployMetaMorphoFactory is ConfiguredScript {
     function run(string memory network) public returns (DeployMetaMorphoFactoryConfig memory config) {
         config = abi.decode(_init(network, true), (DeployMetaMorphoFactoryConfig));
 
-        bytes memory constructorArgs = abi.encode(address(0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb));
+        bytes memory constructorArgs = abi.encode(address(morpho));
 
         metaMorphoFactory =
             IMetaMorphoFactory(_deployCreate2Code("metamorpho", "MetaMorphoFactory", constructorArgs, config.salt));
