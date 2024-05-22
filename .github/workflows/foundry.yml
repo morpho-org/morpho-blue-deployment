@@ -36,4 +36,4 @@ jobs:
       - name: Run forge tests
         run: yarn test -vvv
         env:
-          ALCHEMY_KEY: ${{ secrets.ALCHEMY_KEY }}
+          ALCHEMY_KEY_ETHEREUM: ${{ secrets.ALCHEMY_KEY_ETHEREUM }}
