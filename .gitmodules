@@ -16,3 +16,9 @@
 [submodule "lib/morpho-blue-bundlers"]
 	path = lib/morpho-blue-bundlers
 	url = https://github.com/morpho-org/morpho-blue-bundlers
+[submodule "lib/universal-rewards-distributor"]
+	path = lib/universal-rewards-distributor
+	url = https://github.com/morpho-org/universal-rewards-distributor
+[submodule "lib/public-allocator"]
+	path = lib/public-allocator
+	url = https://github.com/morpho-org/public-allocator
