@@ -2,7 +2,8 @@
 pragma solidity ^0.8.0;
 
 import {IERC20} from "../../lib/forge-std/src/interfaces/IERC20.sol";
-import {IChainlinkOracle} from "../../lib/morpho-blue-oracles/src/interfaces/IChainlinkOracle.sol";
+import {IMorphoChainlinkOracleV2} from
+    "../../lib/morpho-blue-oracles/src/morpho-chainlink/interfaces/IMorphoChainlinkOracleV2.sol";
 
 import "../ConfiguredScript.sol";
 
@@ -10,6 +11,8 @@ import "../ConfiguredScript.sol";
 struct OracleConfig {
     address baseFeed1;
     address baseFeed2;
+    address baseVault;
+    uint256 baseVaultConversionSample;
     address collateralToken;
     address loanToken;
     uint256 maxPrice;
@@ -17,8 +20,9 @@ struct OracleConfig {
     string name;
     address quoteFeed1;
     address quoteFeed2;
+    address quoteVault;
+    uint256 quoteVaultConversionSample;
     bytes32 salt;
-    uint256 vaultConversionSample;
 }
 
 contract DeployOracle is ConfiguredScript {
@@ -34,32 +38,28 @@ contract DeployOracle is ConfiguredScript {
 
             console2.log("  Market [%s]", oracleConfig.name);
 
-            address vault = oracleConfig.vaultConversionSample > 1 ? oracleConfig.collateralToken : address(0);
             uint256 baseTokenDecimals = IERC20(oracleConfig.collateralToken).decimals();
             uint256 quoteTokenDecimals = IERC20(oracleConfig.loanToken).decimals();
 
-            IChainlinkOracle oracle = IChainlinkOracle(
+            IMorphoChainlinkOracleV2 oracle = IMorphoChainlinkOracleV2(
                 _deployCreate2Code(
                     "morpho-blue-oracles",
-                    "ChainlinkOracle",
+                    "MorphoChainlinkOracleV2",
                     abi.encode(
-                        vault,
+                        oracleConfig.baseVault,
+                        oracleConfig.baseVaultConversionSample,
                         oracleConfig.baseFeed1,
                         oracleConfig.baseFeed2,
+                        baseTokenDecimals,
+                        oracleConfig.quoteVault,
+                        oracleConfig.quoteVaultConversionSample,
                         oracleConfig.quoteFeed1,
                         oracleConfig.quoteFeed2,
-                        oracleConfig.vaultConversionSample,
-                        baseTokenDecimals,
-                        quoteTokenDecimals
+                        quoteTokenDecimals,
+                        oracleConfig.salt
                     ),
                     oracleConfig.salt
                 )
-            );
-
-            require(address(oracle.VAULT()) == vault, "unexpected vault");
-            require(
-                oracle.VAULT_CONVERSION_SAMPLE() == oracleConfig.vaultConversionSample,
-                "unexpected vault conversion sample"
             );
             require(address(oracle.BASE_FEED_1()) == oracleConfig.baseFeed1, "unexpected baseFeed1");
             require(address(oracle.BASE_FEED_2()) == oracleConfig.baseFeed2, "unexpected baseFeed2");
