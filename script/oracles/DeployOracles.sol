@@ -61,6 +61,17 @@ contract DeployOracle is ConfiguredScript {
                     oracleConfig.salt
                 )
             );
+
+            require(address(oracle.BASE_VAULT()) == oracleConfig.baseVault, "unexpected base vault");
+            require(address(oracle.QUOTE_VAULT()) == oracleConfig.quoteVault, "unexpected quote vault");
+            require(
+                oracle.BASE_VAULT_CONVERSION_SAMPLE() == oracleConfig.baseVaultConversionSample,
+                "unexpected base vault conversion sample"
+            );
+            require(
+                oracle.QUOTE_VAULT_CONVERSION_SAMPLE() == oracleConfig.quoteVaultConversionSample,
+                "unexpected quote vault conversion sample"
+            );
             require(address(oracle.BASE_FEED_1()) == oracleConfig.baseFeed1, "unexpected baseFeed1");
             require(address(oracle.BASE_FEED_2()) == oracleConfig.baseFeed2, "unexpected baseFeed2");
             require(address(oracle.QUOTE_FEED_1()) == oracleConfig.quoteFeed1, "unexpected quoteFeed1");
